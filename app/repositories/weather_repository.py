@@ -17,7 +17,8 @@ class WeatherRepository:
         self.session.add_all(items)
 
     def search(self, country: str, day: date, location: Optional[str] = None,
-               direction: Optional[WindDirection] = None) -> list[Weather]:
+               direction: Optional[WindDirection] = None,
+               go_outside: Optional[bool] = None) -> list[Weather]:
         start = datetime.combine(day, time.min)
         end = start + timedelta(days=1)
         stmt = (
@@ -33,4 +34,6 @@ class WeatherRepository:
             stmt = stmt.where(func.lower(Weather.location_name) == location.lower())
         if direction:
             stmt = stmt.where(Wind.wind_direction == direction)
+        if go_outside is not None:
+            stmt = stmt.where(Wind.go_outside == go_outside)
         return list(self.session.execute(stmt).scalars().all())

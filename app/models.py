@@ -2,8 +2,8 @@ import enum
 from datetime import datetime, time
 from typing import Optional
 
-from sqlalchemy import (BigInteger, DateTime, Enum, Float, ForeignKey, Index,
-                        Integer, String, Time)
+from sqlalchemy import (BigInteger, Boolean, DateTime, Enum, Float, ForeignKey, Index,
+                        Integer, String, Time, false)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -42,7 +42,6 @@ class Weather(Base):
 
 
 class Wind(Base):
-    """Категорія «вітер», винесена з weather окремою міграцією."""
     __tablename__ = "wind"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -58,5 +57,9 @@ class Wind(Base):
     )
     gust_mph: Mapped[Optional[float]] = mapped_column(Float)
     gust_kph: Mapped[Optional[float]] = mapped_column(Float)
+    # «Чи варто виходити на вулицю»; дефолт на рівні БД = false («ні»)
+    go_outside: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, server_default=false()
+    )
 
     weather: Mapped["Weather"] = relationship(back_populates="wind")

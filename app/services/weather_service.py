@@ -12,9 +12,10 @@ class WeatherService:
         self.repo = WeatherRepository(session)
 
     def find(self, country: str, day: date, location: Optional[str] = None,
-             direction: Optional[str] = None) -> list[Weather]:
+             direction: Optional[str] = None,
+             go_outside: Optional[bool] = None) -> list[Weather]:
         d = WindDirection(direction.upper()) if direction else None
-        return self.repo.search(country, day, location, d)
+        return self.repo.search(country, day, location, d, go_outside)
 
     @staticmethod
     def format(w: Weather) -> str:
@@ -25,5 +26,6 @@ class WeatherService:
             f"  Температура: {w.temperature_celsius} °C ({w.temperature_fahrenheit} °F), {w.condition_text}\n"
             f"  Схід/захід сонця: {w.sunrise} / {w.sunset}\n"
             f"  Вітер: {x.wind_kph} км/год ({x.wind_mph} mph), {x.wind_degree}° "
-            f"{x.wind_direction.value}, пориви {x.gust_kph} км/год"
+            f"{x.wind_direction.value}, пориви {x.gust_kph} км/год\n"
+            f"  Чи варто виходити на вулицю: {'ТАК' if x.go_outside else 'НІ'}"
         )
