@@ -18,11 +18,12 @@ class WeatherService:
 
     @staticmethod
     def format(w: Weather) -> str:
+        x = w.wind
         return (
             f"{w.country} / {w.location_name} @ {w.last_updated:%Y-%m-%d %H:%M}\n"
             f"  Координати: {w.latitude}, {w.longitude}; часовий пояс: {w.timezone}\n"
             f"  Температура: {w.temperature_celsius} °C ({w.temperature_fahrenheit} °F), {w.condition_text}\n"
             f"  Схід/захід сонця: {w.sunrise} / {w.sunset}\n"
-            f"  Вітер: {w.wind_kph} км/год ({w.wind_mph} mph), {w.wind_degree}° "
-            f"{w.wind_direction.value}, пориви {w.gust_kph} км/год"
+            f"  Вітер: {x.wind_kph} км/год ({x.wind_mph} mph), {x.wind_degree}° "
+            f"{x.wind_direction.value}, пориви {x.gust_kph} км/год"
         )

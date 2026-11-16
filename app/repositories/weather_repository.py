@@ -2,9 +2,9 @@ from datetime import date, datetime, time, timedelta
 from typing import Optional, Sequence
 
 from sqlalchemy import func, select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, contains_eager
 
-from app.models import Weather, WindDirection
+from app.models import Weather, Wind, WindDirection
 
 
 class WeatherRepository:
@@ -22,6 +22,8 @@ class WeatherRepository:
         end = start + timedelta(days=1)
         stmt = (
             select(Weather)
+            .join(Weather.wind)
+            .options(contains_eager(Weather.wind))
             .where(func.lower(Weather.country) == country.lower(),
                    Weather.last_updated >= start,
                    Weather.last_updated < end)
@@ -30,5 +32,5 @@ class WeatherRepository:
         if location:
             stmt = stmt.where(func.lower(Weather.location_name) == location.lower())
         if direction:
-            stmt = stmt.where(Weather.wind_direction == direction)
+            stmt = stmt.where(Wind.wind_direction == direction)
         return list(self.session.execute(stmt).scalars().all())
