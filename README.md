@@ -4,7 +4,7 @@
 
 ## Датасет
 
-[Global Weather Repository](https://www.kaggle.com/) (Kaggle), файл `GlobalWeatherRepository.csv`.
+[Global Weather Repository](https://www.kaggle.com/datasets/arulkrishnan47/globalweatherrepository-csv) (Kaggle).
 
 ## Стек
 
